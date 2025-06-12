@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import DoctorDashboard from "@/components/DoctorDashboard";
-import LoginForm from "@/components/LoginForm";
+import DoctorDashboard from "@/components/dashboard/DoctorDashboard";
+import LoginForm from "@/components/auth/LoginForm";
 import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
