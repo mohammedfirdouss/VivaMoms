@@ -1,34 +1,39 @@
-
 import { useState } from "react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/shared/tabs";
+import { Button } from "@/components/shared/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import { Badge } from "@/components/shared/badge";
 import { LogOut, Users, Calendar, MessageSquare, Activity, FileText } from "lucide-react";
-import PatientList from "./PatientList";
-import ConsultationHistory from "./ConsultationHistory";
-import CHWCommunication from "./CHWCommunication";
-import PerformanceMonitor from "./PerformanceMonitor";
-import DoctorProfile from "./DoctorProfile";
-import NotificationCenter from "./NotificationCenter";
-import OfflineSync from "./OfflineSync";
+import PatientList from "@/components/patients/PatientList";
+import ConsultationHistory from "@/components/consultations/ConsultationHistory";
+import CHWCommunication from "@/components/messaging/CHWCommunication";
+import PerformanceMonitor from "@/components/dashboard/PerformanceMonitor";
+import DoctorProfile from "@/components/dashboard/DoctorProfile";
+import NotificationCenter from "@/components/dashboard/NotificationCenter";
+import OfflineSync from "@/components/shared/OfflineSync";
+import ConsultationStatusBadge from "@/components/consultations/ConsultationStatusBadge";
+import LoadingSpinner from "@/components/shared/LoadingSpinner";
+import EmptyState from "@/components/shared/EmptyState";
 import { useConsultations } from "@/hooks/useConsultations";
 import { usePatients } from "@/hooks/usePatients";
-import ConsultationStatusBadge from "./ConsultationStatusBadge";
-import LoadingSpinner from "./LoadingSpinner";
-import EmptyState from "./EmptyState";
 
 interface DoctorDashboardProps {
-  user: any;
+  user: {
+    id: string;
+    name: string;
+    email: string;
+  };
   onLogout: () => void;
 }
 
 const DoctorDashboard = ({ user, onLogout }: DoctorDashboardProps) => {
   const [activeTab, setActiveTab] = useState("overview");
-  const { consultations, loading: consultationsLoading } = useConsultations(user?.id);
-  const { patients, loading: patientsLoading } = usePatients(user?.id);
+  const { consultations, loading: consultationsLoading } = useConsultations(user.id);
+  const { patients, loading: patientsLoading } = usePatients(user.id);
 
   const getConsultationStats = () => {
+    if (!consultations) return { pending: 0, inProgress: 0, completed: 0, cancelled: 0, total: 0 };
+    
     const pending = consultations.filter(c => c.status === 'pending').length;
     const inProgress = consultations.filter(c => c.status === 'in_progress').length;
     const completed = consultations.filter(c => c.status === 'completed').length;
@@ -57,7 +62,7 @@ const DoctorDashboard = ({ user, onLogout }: DoctorDashboardProps) => {
             
             <div className="flex items-center space-x-4">
               <OfflineSync />
-              <NotificationCenter userId={user?.id} />
+              <NotificationCenter userId={user.id} />
               <DoctorProfile user={user} />
               <Button 
                 onClick={onLogout} 
@@ -111,7 +116,7 @@ const DoctorDashboard = ({ user, onLogout }: DoctorDashboardProps) => {
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">
-                    {patientsLoading ? <LoadingSpinner size="sm" /> : patients.length}
+                    {patientsLoading ? <LoadingSpinner size="sm" /> : patients?.length || 0}
                   </div>
                   <p className="text-blue-100 text-xs">Active patients in your care</p>
                 </CardContent>
@@ -180,7 +185,7 @@ const DoctorDashboard = ({ user, onLogout }: DoctorDashboardProps) => {
               <CardContent>
                 {consultationsLoading ? (
                   <LoadingSpinner text="Loading consultations..." />
-                ) : consultations.length === 0 ? (
+                ) : !consultations || consultations.length === 0 ? (
                   <EmptyState
                     icon={<Calendar className="h-12 w-12" />}
                     title="No consultations yet"

@@ -1,10 +1,10 @@
 
 import { useState } from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/ui/dialog";
-import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/shared/avatar";
+import { Button } from "@/components/shared/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from "@/components/shared/dialog";
+import { Badge } from "@/components/shared/badge";
 import { User, Mail, Phone, MapPin, Calendar, Award, BookOpen } from "lucide-react";
 
 interface DoctorProfileProps {

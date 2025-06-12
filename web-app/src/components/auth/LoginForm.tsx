@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import { Button } from "@/components/shared/button";
+import { Input } from "@/components/shared/input";
+import { Label } from "@/components/shared/label";
+import { Alert, AlertDescription } from "@/components/shared/alert";
 import { Shield, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { securityService } from "@/utils/security";
 import { useLocalization } from "@/utils/localization";
-import { measureApiCall } from "@/utils/performance";
-import LanguageSelector from "./LanguageSelector";
-import PregnantMomIcon from "./PregnantMomIcon";
-import OfflineSync from "./OfflineSync";
+import LanguageSelector from "@/components/dashboard/LanguageSelector";
+import PregnantMomIcon from "@/components/shared/PregnantMomIcon";
+import OfflineSync from "@/components/shared/OfflineSync";
 
 interface LoginFormProps {
   onLogin: (userData: any) => void;

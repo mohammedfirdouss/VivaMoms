@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/shared/card";
+import { Button } from "@/components/shared/button";
 import { performanceMonitor } from "@/utils/performance";
 import { loadTestRunner, VIVAMOMS_LOAD_TESTS } from "@/utils/loadTesting";
 import { Activity, Zap, Clock, AlertTriangle } from "lucide-react";

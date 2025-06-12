@@ -1,11 +1,11 @@
 
 import { useState } from 'react';
 import { Bell, X, Check, CheckCheck } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/shared/button';
+import { Badge } from '@/components/shared/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/shared/card';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/shared/popover';
+import { ScrollArea } from '@/components/shared/scroll-area';
 import { useNotifications, Notification } from '@/hooks/useNotifications';
 import { formatDistanceToNow } from 'date-fns';
 

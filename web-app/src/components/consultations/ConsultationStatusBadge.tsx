@@ -1,5 +1,5 @@
 
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/components/shared/badge';
 import { Clock, Play, CheckCircle, XCircle } from 'lucide-react';
 
 interface ConsultationStatusBadgeProps {

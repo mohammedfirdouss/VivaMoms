@@ -1,12 +1,12 @@
 
 import { Globe } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/shared/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/shared/dropdown-menu";
 import { useLocalization, SupportedLanguage } from "@/utils/localization";
 
 const LANGUAGE_NAMES: Record<SupportedLanguage, string> = {

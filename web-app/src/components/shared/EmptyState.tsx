@@ -1,7 +1,7 @@
 
 import { ReactNode } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/shared/card';
+import { Button } from '@/components/shared/button';
 
 interface EmptyStateProps {
   icon?: ReactNode;
