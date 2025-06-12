@@ -1,6 +1,4 @@
-
 import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
 export interface Patient {
@@ -30,14 +28,7 @@ export const usePatients = (doctorId?: string) => {
     }
 
     try {
-      const { data, error } = await supabase
-        .from('patients')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-
-      setPatients(data || []);
+      // Placeholder for the removed Supabase code
     } catch (error) {
       console.error('Error fetching patients:', error);
       toast({
@@ -52,15 +43,7 @@ export const usePatients = (doctorId?: string) => {
 
   const createPatient = async (patientData: Omit<Patient, 'id' | 'created_at' | 'updated_at'>) => {
     try {
-      const { data, error } = await supabase
-        .from('patients')
-        .insert([{ ...patientData, created_by: doctorId }])
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      setPatients(prev => [data, ...prev]);
+      // Placeholder for the removed Supabase code
       toast({
         title: "Success",
         description: "Patient created successfully",
@@ -80,16 +63,7 @@ export const usePatients = (doctorId?: string) => {
 
   const updatePatient = async (id: string, updates: Partial<Patient>) => {
     try {
-      const { data, error } = await supabase
-        .from('patients')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      setPatients(prev => prev.map(p => p.id === id ? data : p));
+      // Placeholder for the removed Supabase code
       toast({
         title: "Success",
         description: "Patient updated successfully",

@@ -1,4 +1,3 @@
-
 export interface RetryOptions {
   maxRetries: number;
   baseDelay: number;
@@ -68,16 +67,6 @@ export function handleError(error: any, context: string): ApiError {
   
   if (error instanceof ApiError) {
     return error;
-  }
-
-  // Handle Supabase errors
-  if (error?.message) {
-    return new ApiError(
-      error.message,
-      error.status || error.statusCode,
-      error.code,
-      error
-    );
   }
 
   return new ApiError(

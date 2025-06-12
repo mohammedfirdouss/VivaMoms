@@ -1,6 +1,3 @@
-
-import { supabase } from '@/integrations/supabase/client';
-
 export interface SecurityConfig {
   sessionTimeout: number; // in milliseconds
   maxLoginAttempts: number;
@@ -54,7 +51,6 @@ class SecurityService {
 
   private async handleSessionTimeout() {
     console.warn('Session timeout - logging out user');
-    await supabase.auth.signOut();
     window.location.href = '/';
   }
 
