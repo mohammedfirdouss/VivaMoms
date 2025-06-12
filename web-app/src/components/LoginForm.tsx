@@ -97,19 +97,6 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     });
     setIsLoading(false);
   };
- // Immediately log in with dummy user data
-//    onLogin({
-//      id: 'dummy-id',
-//      email,
-//      first_name: firstName || 'Doctor',
-//      last_name: lastName || '',
-//      license_number: licenseNumber || '',
-//      specialization: specialization || '',
-//      role: 'doctor',
-//    });
-//    setIsLoading(false);
-
-
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
