@@ -24,73 +24,57 @@ export const useNotifications = (userId?: string) => {
       return;
     }
 
-    try {
-      const { data, error } = await supabase
-        .from('notifications')
-        .select('*')
-        .eq('user_id', userId)
-        .order('created_at', { ascending: false })
-        .limit(50);
+    // Placeholder for supabase fetch
+    // const { data, error } = await supabase
+    //   .from('notifications')
+    //   .select('*')
+    //   .eq('user_id', userId)
+    //   .order('created_at', { ascending: false })
+    //   .limit(50);
 
-      if (error) throw error;
+    // if (error) throw error;
 
-      // Type the data properly and ensure type field is valid
-      const typedNotifications: Notification[] = (data || []).map(item => ({
-        ...item,
-        type: ['info', 'success', 'warning', 'error'].includes(item.type) 
-          ? item.type as 'info' | 'success' | 'warning' | 'error'
-          : 'info'
-      }));
+    // Type the data properly and ensure type field is valid
+    // const typedNotifications: Notification[] = (data || []).map(item => ({
+    //   ...item,
+    //   type: ['info', 'success', 'warning', 'error'].includes(item.type) 
+    //     ? item.type as 'info' | 'success' | 'warning' | 'error'
+    //     : 'info'
+    // }));
 
-      setNotifications(typedNotifications);
-      setUnreadCount(typedNotifications.filter(n => !n.is_read).length);
-    } catch (error) {
-      console.error('Error fetching notifications:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load notifications",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
+    // setNotifications(typedNotifications);
+    // setUnreadCount(typedNotifications.filter(n => !n.is_read).length);
   };
 
   const markAsRead = async (notificationId: string) => {
-    try {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ is_read: true })
-        .eq('id', notificationId);
+    // Placeholder for supabase update
+    // const { error } = await supabase
+    //   .from('notifications')
+    //   .update({ is_read: true })
+    //   .eq('id', notificationId);
 
-      if (error) throw error;
+    // if (error) throw error;
 
-      setNotifications(prev => 
-        prev.map(n => n.id === notificationId ? { ...n, is_read: true } : n)
-      );
-      setUnreadCount(prev => Math.max(0, prev - 1));
-    } catch (error) {
-      console.error('Error marking notification as read:', error);
-    }
+    // setNotifications(prev => 
+    //   prev.map(n => n.id === notificationId ? { ...n, is_read: true } : n)
+    // );
+    // setUnreadCount(prev => Math.max(0, prev - 1));
   };
 
   const markAllAsRead = async () => {
     if (!userId) return;
 
-    try {
-      const { error } = await supabase
-        .from('notifications')
-        .update({ is_read: true })
-        .eq('user_id', userId)
-        .eq('is_read', false);
+    // Placeholder for supabase update
+    // const { error } = await supabase
+    //   .from('notifications')
+    //   .update({ is_read: true })
+    //   .eq('user_id', userId)
+    //   .eq('is_read', false);
 
-      if (error) throw error;
+    // if (error) throw error;
 
-      setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
-      setUnreadCount(0);
-    } catch (error) {
-      console.error('Error marking all notifications as read:', error);
-    }
+    // setNotifications(prev => prev.map(n => ({ ...n, is_read: true })));
+    // setUnreadCount(0);
   };
 
   useEffect(() => {
@@ -101,41 +85,42 @@ export const useNotifications = (userId?: string) => {
   useEffect(() => {
     if (!userId) return;
 
-    const channel = supabase
-      .channel('notifications')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'notifications',
-          filter: `user_id=eq.${userId}`
-        },
-        (payload) => {
-          const newNotification = payload.new as any;
-          const typedNotification: Notification = {
-            ...newNotification,
-            type: ['info', 'success', 'warning', 'error'].includes(newNotification.type) 
-              ? newNotification.type as 'info' | 'success' | 'warning' | 'error'
-              : 'info'
-          };
-          
-          setNotifications(prev => [typedNotification, ...prev]);
-          setUnreadCount(prev => prev + 1);
-          
-          // Show toast for new notification
-          toast({
-            title: typedNotification.title,
-            description: typedNotification.message,
-            variant: typedNotification.type === 'error' ? 'destructive' : 'default',
-          });
-        }
-      )
-      .subscribe();
+    // Placeholder for supabase subscription
+    // const channel = supabase
+    //   .channel('notifications')
+    //   .on(
+    //     'postgres_changes',
+    //     {
+    //       event: 'INSERT',
+    //       schema: 'public',
+    //       table: 'notifications',
+    //       filter: `user_id=eq.${userId}`
+    //     },
+    //     (payload) => {
+    //       const newNotification = payload.new as any;
+    //       const typedNotification: Notification = {
+    //         ...newNotification,
+    //         type: ['info', 'success', 'warning', 'error'].includes(newNotification.type) 
+    //           ? newNotification.type as 'info' | 'success' | 'warning' | 'error'
+    //           : 'info'
+    //       };
+    //       
+    //       setNotifications(prev => [typedNotification, ...prev]);
+    //       setUnreadCount(prev => prev + 1);
+    //       
+    //       // Show toast for new notification
+    //       toast({
+    //         title: typedNotification.title,
+    //         description: typedNotification.message,
+    //         variant: typedNotification.type === 'error' ? 'destructive' : 'default',
+    //       });
+    //     }
+    //   )
+    //   .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    // return () => {
+    //   supabase.removeChannel(channel);
+    // };
   }, [userId, toast]);
 
   return {

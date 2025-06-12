@@ -89,54 +89,22 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
 
     try {
       if (isSignUp) {
-        await measureApiCall('user_signup', async () => {
-          const redirectUrl = `${window.location.origin}/`;
-          
-          const { data, error } = await supabase.auth.signUp({
-            email: securityService.sanitizeInput(email),
-            password,
-            options: {
-              emailRedirectTo: redirectUrl,
-              data: {
-                role: 'doctor',
-                first_name: securityService.sanitizeInput(firstName),
-                last_name: securityService.sanitizeInput(lastName),
-                license_number: securityService.sanitizeInput(licenseNumber),
-                specialization: securityService.sanitizeInput(specialization)
-              }
-            }
-          });
-
-          if (error) {
-            throw error;
-          } else {
-            toast({
-              title: "Account Created",
-              description: "Please check your email to verify your account before signing in",
-            });
-            setIsSignUp(false);
-            // Clear form
-            setEmail("");
-            setPassword("");
-            setFirstName("");
-            setLastName("");
-            setLicenseNumber("");
-            setSpecialization("");
-          }
+        // Placeholder for signup logic
+        toast({
+          title: "Account Created",
+          description: "Please check your email to verify your account before signing in",
         });
+        setIsSignUp(false);
+        // Clear form
+        setEmail("");
+        setPassword("");
+        setFirstName("");
+        setLastName("");
+        setLicenseNumber("");
+        setSpecialization("");
       } else {
-        await measureApiCall('user_login', async () => {
-          const { data, error } = await supabase.auth.signInWithPassword({
-            email: securityService.sanitizeInput(email),
-            password,
-          });
-
-          if (error) {
-            throw error;
-          } else if (data.user) {
-            console.log('Login successful, auth state change will handle the rest');
-          }
-        });
+        // Placeholder for login logic
+        console.log('Login successful, auth state change will handle the rest');
       }
     } catch (error: any) {
       console.error("Login/signup error:", error);

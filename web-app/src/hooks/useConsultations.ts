@@ -59,43 +59,40 @@ export const useConsultations = (doctorId?: string) => {
     try {
       await measureApiCall('fetch_consultations', async () => {
         await withRetry(async () => {
-          const { data, error } = await supabase
-            .from('consultations')
-            .select(`
-              *,
-              patients:patient_id (
-                id,
-                patient_id,
-                first_name,
-                last_name,
-                date_of_birth,
-                phone
-              ),
-              profiles:chw_id (
-                first_name,
-                last_name,
-                location
-              )
-            `)
-            .eq('doctor_id', doctorId)
-            .order('created_at', { ascending: false });
+          // Placeholder for supabase call
+          // const { data, error } = await supabase
+          //   .from('consultations')
+          //   .select(`
+          //     *,
+          //     patients:patient_id (
+          //       id,
+          //       patient_id,
+          //       first_name,
+          //       last_name,
+          //       date_of_birth,
+          //       phone
+          //     ),
+          //     profiles:chw_id (
+          //       first_name,
+          //       last_name,
+          //       location
+          //     )
+          //   `)
+          //   .eq('doctor_id', doctorId)
+          //   .order('created_at', { ascending: false });
 
-          if (error) {
-            throw handleError(error, 'fetchConsultations');
-          }
-
-          // Type the data properly and filter out invalid entries
-          const rawData = data as any[];
-          const validConsultations = rawData.filter(consultation => {
-            return consultation.patients && 
-                   consultation.profiles && 
-                   typeof consultation.patients === 'object' &&
-                   typeof consultation.profiles === 'object' &&
-                   !consultation.patients.error &&
-                   !consultation.profiles.error;
-          });
+          // Placeholder for data processing
+          // const rawData = data as any[];
+          // const validConsultations = rawData.filter(consultation => {
+          //   return consultation.patients && 
+          //          consultation.profiles && 
+          //          typeof consultation.patients === 'object' &&
+          //          typeof consultation.profiles === 'object' &&
+          //          !consultation.patients.error &&
+          //          !consultation.profiles.error;
+          // });
           
-          setConsultations(validConsultations as Consultation[]);
+          // setConsultations(validConsultations as Consultation[]);
         });
       });
     } catch (error) {
@@ -122,28 +119,29 @@ export const useConsultations = (doctorId?: string) => {
     try {
       await measureApiCall('update_consultation_status', async () => {
         await withRetry(async () => {
-          const updateData: any = { 
-            status,
-            updated_at: new Date().toISOString()
-          };
+          // Placeholder for  update
+          // const updateData: any = { 
+          //   status,
+          //   updated_at: new Date().toISOString()
+          // };
 
-          if (status === 'in_progress') {
-            updateData.started_at = new Date().toISOString();
-          } else if (status === 'completed') {
-            updateData.completed_at = new Date().toISOString();
-            if (doctorNotes) updateData.doctor_notes = doctorNotes;
-            if (diagnosis) updateData.diagnosis = diagnosis;
-            if (treatmentPlan) updateData.treatment_plan = treatmentPlan;
-          }
+          // if (status === 'in_progress') {
+          //   updateData.started_at = new Date().toISOString();
+          // } else if (status === 'completed') {
+          //   updateData.completed_at = new Date().toISOString();
+          //   if (doctorNotes) updateData.doctor_notes = doctorNotes;
+          //   if (diagnosis) updateData.diagnosis = diagnosis;
+          //   if (treatmentPlan) updateData.treatment_plan = treatmentPlan;
+          // }
 
-          const { error } = await supabase
-            .from('consultations')
-            .update(updateData)
-            .eq('id', consultationId);
+          // const { error } = await supabase
+          //   .from('consultations')
+          //   .update(updateData)
+          //   .eq('id', consultationId);
 
-          if (error) {
-            throw handleError(error, 'updateConsultationStatus');
-          }
+          // if (error) {
+          //   throw handleError(error, 'updateConsultationStatus');
+          // }
         });
       });
 

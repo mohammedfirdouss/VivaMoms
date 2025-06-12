@@ -27,47 +27,48 @@ export const useMessages = (consultationId?: string, userId?: string) => {
     if (!consultationId) return;
 
     try {
-      const { data, error } = await supabase
-        .from('messages')
-        .select(`
-          *,
-          sender:sender_id (
-            first_name,
-            last_name,
-            role
-          )
-        `)
-        .eq('consultation_id', consultationId)
-        .order('created_at', { ascending: true });
+      // Placeholder for supabase fetch
+      // const { data, error } = await supabase
+      //   .from('messages')
+      //   .select(`
+      //     *,
+      //     sender:sender_id (
+      //       first_name,
+      //       last_name,
+      //       role
+      //     )
+      //   `)
+      //   .eq('consultation_id', consultationId)
+      //   .order('created_at', { ascending: true });
 
-      if (error) {
-        console.error('Error fetching messages:', error);
-        setMessages([]);
-      } else {
-        // Type the data properly and filter out invalid entries
-        const rawData = data as any[];
-        const validMessages = rawData.filter(message => {
-          return message.sender && 
-                 typeof message.sender === 'object' &&
-                 !message.sender.error;
-        });
-        
-        setMessages(validMessages as Message[]);
-        
-        // Mark messages as read if user is recipient
-        if (userId) {
-          const unreadMessages = validMessages.filter(
-            msg => msg.recipient_id === userId && !msg.is_read
-          );
-          
-          if (unreadMessages.length > 0) {
-            await supabase
-              .from('messages')
-              .update({ is_read: true, read_at: new Date().toISOString() })
-              .in('id', unreadMessages.map(msg => msg.id));
-          }
-        }
-      }
+      // if (error) {
+      //   console.error('Error fetching messages:', error);
+      //   setMessages([]);
+      // } else {
+      //   // Type the data properly and filter out invalid entries
+      //   const rawData = data as any[];
+      //   const validMessages = rawData.filter(message => {
+      //     return message.sender && 
+      //            typeof message.sender === 'object' &&
+      //            !message.sender.error;
+      //   });
+      //   
+      //   setMessages(validMessages as Message[]);
+      //   
+      //   // Mark messages as read if user is recipient
+      //   if (userId) {
+      //     const unreadMessages = validMessages.filter(
+      //       msg => msg.recipient_id === userId && !msg.is_read
+      //     );
+      //     
+      //     if (unreadMessages.length > 0) {
+      //       await supabase
+      //         .from('messages')
+      //         .update({ is_read: true, read_at: new Date().toISOString() })
+      //         .in('id', unreadMessages.map(msg => msg.id));
+      //     }
+      //   }
+      // }
     } catch (error) {
       console.error('Error:', error);
       setMessages([]);
@@ -80,26 +81,27 @@ export const useMessages = (consultationId?: string, userId?: string) => {
     if (!consultationId || !userId) return;
 
     try {
-      const { error } = await supabase
-        .from('messages')
-        .insert({
-          consultation_id: consultationId,
-          sender_id: userId,
-          recipient_id: recipientId,
-          content,
-          message_type: 'text'
-        });
+      // Placeholder for supabase send
+      // const { error } = await supabase
+      //   .from('messages')
+      //   .insert({
+      //     consultation_id: consultationId,
+      //     sender_id: userId,
+      //     recipient_id: recipientId,
+      //     content,
+      //     message_type: 'text'
+      //   });
 
-      if (error) {
-        toast({
-          title: "Error",
-          description: "Failed to send message",
-          variant: "destructive",
-        });
-        console.error('Error sending message:', error);
-      } else {
-        fetchMessages(); // Refresh messages
-      }
+      // if (error) {
+      //   toast({
+      //     title: "Error",
+      //     description: "Failed to send message",
+      //     variant: "destructive",
+      //   });
+      //   console.error('Error sending message:', error);
+      // } else {
+      //   fetchMessages(); // Refresh messages
+      // }
     } catch (error) {
       console.error('Error:', error);
     }
@@ -113,25 +115,26 @@ export const useMessages = (consultationId?: string, userId?: string) => {
   useEffect(() => {
     if (!consultationId) return;
 
-    const channel = supabase
-      .channel('messages')
-      .on(
-        'postgres_changes',
-        {
-          event: 'INSERT',
-          schema: 'public',
-          table: 'messages',
-          filter: `consultation_id=eq.${consultationId}`
-        },
-        () => {
-          fetchMessages();
-        }
-      )
-      .subscribe();
+    // Placeholder for supabase subscription
+    // const channel = supabase
+    //   .channel('messages')
+    //   .on(
+    //     'postgres_changes',
+    //     {
+    //       event: 'INSERT',
+    //       schema: 'public',
+    //       table: 'messages',
+    //       filter: `consultation_id=eq.${consultationId}`
+    //     },
+    //     () => {
+    //       fetchMessages();
+    //     }
+    //   )
+    //   .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
+    // return () => {
+    //   supabase.removeChannel(channel);
+    // };
   }, [consultationId]);
 
   return {
