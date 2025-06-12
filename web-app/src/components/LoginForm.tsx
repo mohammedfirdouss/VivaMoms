@@ -85,50 +85,31 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     if (!validateForm()) return;
 
     setIsLoading(true);
-    securityService.logSecurityEvent('login_attempt', { email, isSignUp });
-
-    try {
-      if (isSignUp) {
-        // Placeholder for signup logic
-        toast({
-          title: "Account Created",
-          description: "Please check your email to verify your account before signing in",
-        });
-        setIsSignUp(false);
-        // Clear form
-        setEmail("");
-        setPassword("");
-        setFirstName("");
-        setLastName("");
-        setLicenseNumber("");
-        setSpecialization("");
-      } else {
-        // Placeholder for login logic
-        console.log('Login successful, auth state change will handle the rest');
-      }
-    } catch (error: any) {
-      console.error("Login/signup error:", error);
-      
-      let errorMessage = error.message;
-      
-      // Provide more user-friendly error messages
-      if (error.message?.includes('Invalid login credentials')) {
-        errorMessage = "Invalid email or password. Please check your credentials and try again.";
-      } else if (error.message?.includes('Email not confirmed')) {
-        errorMessage = "Please check your email and click the confirmation link before signing in.";
-      } else if (error.message?.includes('User already registered')) {
-        errorMessage = "An account with this email already exists. Please sign in instead.";
-      }
-      
-      toast({
-        title: isSignUp ? "Sign Up Failed" : "Login Failed",
-        description: errorMessage,
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    // Immediately log in with dummy user data
+    onLogin({
+      id: 'dummy-id',
+      email,
+      first_name: firstName || 'Doctor',
+      last_name: lastName || '',
+      license_number: licenseNumber || '',
+      specialization: specialization || '',
+      role: 'doctor',
+    });
+    setIsLoading(false);
   };
+ // Immediately log in with dummy user data
+//    onLogin({
+//      id: 'dummy-id',
+//      email,
+//      first_name: firstName || 'Doctor',
+//      last_name: lastName || '',
+//      license_number: licenseNumber || '',
+//      specialization: specialization || '',
+//      role: 'doctor',
+//    });
+//    setIsLoading(false);
+
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center p-4">
