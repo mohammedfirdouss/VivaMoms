@@ -532,17 +532,20 @@ export const getForCurrentUser = query({
     if (identity === null) {
       throw new Error("Not authenticated");
     }
-    // Assuming you want messages where the user is the recipient
+    // Find user by Clerk ID, then fetch messages
     const user = await ctx.db
       .query("users")
       .filter((q) => q.eq(q.field("clerkId"), identity.subject))
       .first();
-    if (!user) {
-      throw new Error("User not found");
-    }
+    if (!user) throw new Error("User not found");
     return await ctx.db
       .query("messages")
-      .filter((q) => q.eq(q.field("recipient_id"), user._id))
+      .filter((q) =>
+        q.or(
+          q.eq(q.field("sender_id"), user._id),
+          q.eq(q.field("recipient_id"), user._id)
+        )
+      )
       .collect();
   },
 });

@@ -11,12 +11,18 @@ import { useLocalization } from "@/utils/localization";
 import LanguageSelector from "@/components/dashboard/LanguageSelector";
 import PregnantMomIcon from "@/components/shared/PregnantMomIcon";
 import OfflineSync from "@/components/shared/OfflineSync";
+import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
+import { UserButton, useSignIn } from "@clerk/clerk-react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { TooltipProvider } from "@/components/shared/tooltip";
+import { Toaster } from "@/components/shared/toaster";
+import { Toaster as Sonner } from "@/components/shared/sonner";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import NotFound from "./pages/NotFound";
 
-interface LoginFormProps {
-  onLogin: (userData: any) => void;
-}
-
-const LoginForm = ({ onLogin }: LoginFormProps) => {
+const LoginForm = () => {
+  const { signIn, setActive } = useSignIn();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -78,22 +84,23 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
     return true;
   };
 
+  const handleLogin = async (email, password) => {
+    const result = await signIn.create({ identifier: email, password });
+    if (result.status === "complete") {
+      await setActive({ session: result.createdSessionId });
+      // User is now signed in, Convex will recognize them
+    } else {
+      // Handle errors
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!validateForm()) return;
 
     setIsLoading(true);
-    // Immediately log in with dummy user data
-    onLogin({
-      id: 'dummy-id',
-      email,
-      first_name: firstName || 'Doctor',
-      last_name: lastName || '',
-      license_number: licenseNumber || '',
-      specialization: specialization || '',
-      role: 'doctor',
-    });
+    await handleLogin(email, password);
     setIsLoading(false);
   };
 
@@ -270,4 +277,32 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
   );
 };
 
-export default LoginForm;
+const queryClient = new QueryClient();
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <AuthLoading>
+        <div>Loading authentication...</div>
+      </AuthLoading>
+      <Unauthenticated>
+        <LoginForm />
+      </Unauthenticated>
+      <Authenticated>
+        <div className="absolute top-4 right-4">
+          <UserButton />
+        </div>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </BrowserRouter>
+      </Authenticated>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
+export default App;
