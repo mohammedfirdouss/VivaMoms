@@ -18,8 +18,6 @@ import { TooltipProvider } from "@/components/shared/tooltip";
 import { Toaster } from "@/components/shared/toaster";
 import { Toaster as Sonner } from "@/components/shared/sonner";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
 
 const LoginForm = () => {
   const { signIn, setActive } = useSignIn();
@@ -294,12 +292,6 @@ const App = () => (
         <div className="absolute top-4 right-4">
           <UserButton />
         </div>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
       </Authenticated>
     </TooltipProvider>
   </QueryClientProvider>
