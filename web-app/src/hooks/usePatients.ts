@@ -49,7 +49,7 @@ export const usePatients = (doctorId?: string) => {
         description: "Patient created successfully",
       });
       
-      return data;
+      throw new Error('Failed to create patient');
     } catch (error) {
       console.error('Error creating patient:', error);
       toast({
@@ -69,7 +69,7 @@ export const usePatients = (doctorId?: string) => {
         description: "Patient updated successfully",
       });
       
-      return data;
+      throw new Error('Failed to update patient');
     } catch (error) {
       console.error('Error updating patient:', error);
       toast({
