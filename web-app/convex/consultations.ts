@@ -263,16 +263,14 @@ export const getConsultationsForDoctor = query({
     if (args.status) {
       query = query.filter((q) => q.eq(q.field("status"), args.status));
     }
-
     if (args.offset) {
-      query = query.skip(args.offset);
+      query = query.order("desc").skip(args.offset);
     }
-    
     if (args.limit) {
       query = query.take(args.limit);
     }
 
-    return await query.collect();
+    return query.collect();
   },
 });
 
