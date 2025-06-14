@@ -1,34 +1,10 @@
-import { useState, useEffect } from "react";
+import { useUser } from "@clerk/clerk-react";
 import DoctorDashboard from "@/components/dashboard/DoctorDashboard";
-import LoginForm from "@/components/auth/LoginForm";
-import { useToast } from "@/hooks/use-toast";
 
 const Index = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const { toast } = useToast();
+  const { isSignedIn, user, isLoaded } = useUser();
 
-  // Remove all supabase usage and related logic, replace with comments or placeholders as needed
-
-  const handleLogin = (userData: any) => {
-    console.log('Login handler called with:', userData);
-    // This is now handled by the auth state change listener
-    // but we keep this for backward compatibility
-    setCurrentUser(userData);
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = async () => {
-    // Remove all supabase usage and related logic, replace with comments or placeholders as needed
-    // ... existing code ...
-  };
-
-  useEffect(() => {
-    setIsLoading(false);
-  }, []);
-
-  if (isLoading) {
+  if (!isLoaded) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
@@ -38,12 +14,10 @@ const Index = () => {
       </div>
     );
   }
-
-  if (!isLoggedIn) {
-    return <LoginForm onLogin={handleLogin} />;
+  if (!isSignedIn) {
+    return null; // Auth flow handled by App.tsx
   }
-
-  return <DoctorDashboard user={currentUser} onLogout={handleLogout} />;
+  return <DoctorDashboard user={user} />;
 };
 
 export default Index;
