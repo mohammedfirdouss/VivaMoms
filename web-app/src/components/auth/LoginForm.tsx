@@ -11,13 +11,7 @@ import { useLocalization } from "@/utils/localization";
 import LanguageSelector from "@/components/dashboard/LanguageSelector";
 import PregnantMomIcon from "@/components/shared/PregnantMomIcon";
 import OfflineSync from "@/components/shared/OfflineSync";
-import { Authenticated, Unauthenticated, AuthLoading } from "convex/react";
-import { UserButton, useSignIn } from "@clerk/clerk-react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { TooltipProvider } from "@/components/shared/tooltip";
-import { Toaster } from "@/components/shared/toaster";
-import { Toaster as Sonner } from "@/components/shared/sonner";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useSignIn } from "@clerk/clerk-react";
 
 const LoginForm = () => {
   const { signIn, setActive } = useSignIn();
@@ -275,26 +269,4 @@ const LoginForm = () => {
   );
 };
 
-const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <AuthLoading>
-        <div>Loading authentication...</div>
-      </AuthLoading>
-      <Unauthenticated>
-        <LoginForm />
-      </Unauthenticated>
-      <Authenticated>
-        <div className="absolute top-4 right-4">
-          <UserButton />
-        </div>
-      </Authenticated>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
-
-export default App;
+export default LoginForm;

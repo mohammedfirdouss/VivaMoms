@@ -1,5 +1,6 @@
 import { useUser } from "@clerk/clerk-react";
 import DoctorDashboard from "@/components/dashboard/DoctorDashboard";
+import LoginForm from "@/components/auth/LoginForm";
 
 const Index = () => {
   const { isSignedIn, user, isLoaded } = useUser();
@@ -15,7 +16,7 @@ const Index = () => {
     );
   }
   if (!isSignedIn) {
-    return null; // Auth flow handled by App.tsx
+    return <LoginForm />;
   }
   return <DoctorDashboard user={user} />;
 };
